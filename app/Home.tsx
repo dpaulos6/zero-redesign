@@ -1,5 +1,4 @@
 "use client"
-
 import { Button } from "@/components/ui/button"
 import {
   NavigationMenu,
@@ -14,12 +13,7 @@ import { MoveRight } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import { useCallback, useEffect, useRef, useState } from "react"
-
-const tabs = [
-  { label: "Smart Categorization", value: "smart-categorization" },
-  { label: "AI Features", value: "ai-features" },
-  { label: "Feature Name", value: "feature-3" }
-]
+import { CustomTabGlow, tabs } from "./page"
 
 export default function Home() {
   const tabRefs = useRef<HTMLButtonElement[]>([])
@@ -53,24 +47,28 @@ export default function Home() {
             <NavigationMenu>
               <NavigationMenuList className="gap-1">
                 <NavigationMenuItem>
-                  <NavigationMenuLink
+                  <Link
                     href="/#"
-                    className={navigationMenuTriggerStyle()}
+                    passHref
                   >
-                    Product
-                  </NavigationMenuLink>
+                    <NavigationMenuLink
+                      className={navigationMenuTriggerStyle()}
+                    >
+                      Product
+                    </NavigationMenuLink>
+                  </Link>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
                   <NavigationMenuTrigger>Solutions</NavigationMenuTrigger>
                   {/* <NavigationMenuContent>
-                    <NavigationMenuLink>Link</NavigationMenuLink>
-                  </NavigationMenuContent> */}
+              <NavigationMenuLink>Link</NavigationMenuLink>
+            </NavigationMenuContent> */}
                 </NavigationMenuItem>
                 <NavigationMenuItem>
                   <NavigationMenuTrigger>Resource</NavigationMenuTrigger>
                   {/* <NavigationMenuContent>
-                    <NavigationMenuLink>Link</NavigationMenuLink>
-                  </NavigationMenuContent> */}
+              <NavigationMenuLink>Link</NavigationMenuLink>
+            </NavigationMenuContent> */}
                 </NavigationMenuItem>
               </NavigationMenuList>
             </NavigationMenu>
@@ -112,17 +110,14 @@ export default function Home() {
         </Button>
       </section>
       <section className="mt-10 flex flex-col">
-        <div className="relative flex justify-center">
-          <div className="-translate-x-1/2 container absolute top-0 left-1/2 h-px bg-border xl:max-w-7xl" />
+        <div className="flex justify-center">
           <Tabs
             defaultValue="smart-categorization"
             onValueChange={handleTabChange}
-            className="flex w-full items-center gap-0"
+            className="flex items-center"
           >
-            <div className="tabs-container relative flex w-full justify-center">
-              <TabsList className="relative h-fit rounded-none bg-transparent pb-0">
-                <div className="-top-4 absolute left-0 h-[calc(100%+16px)] w-px bg-border" />
-                <div className="-top-4 absolute right-0 h-[calc(100%+16px)] w-px bg-border" />
+            <div className="tabs-container relative flex w-full justify-center overflow-hidden">
+              <TabsList className="relative h-fit rounded-none bg-transparent">
                 {/* Glow */}
                 <CustomTabGlow glowStyle={glowStyle} />
 
@@ -142,10 +137,8 @@ export default function Home() {
               </TabsList>
             </div>
 
-            <div className="flex w-full justify-center border-t">
-              <div className="container relative border-x xl:max-w-7xl">
-                <div className="-top-4 -left-px absolute h-4 w-px bg-border" />
-                <div className="-top-4 -right-px absolute h-4 w-px bg-border" />
+            <div className="flex justify-center">
+              <div className="container xl:max-w-7xl">
                 {tabs.map((tab) => (
                   <TabsContent
                     key={tab.value}
@@ -166,29 +159,5 @@ export default function Home() {
         </div>
       </section>
     </main>
-  )
-}
-
-const CustomTabGlow = ({
-  glowStyle
-}: { glowStyle: { left: number; width: number } }) => {
-  return (
-    <div
-      className="absolute w-1/3 transition-all duration-300 ease-in-out"
-      style={{
-        left: `${glowStyle.left}px`
-      }}
-    >
-      <div
-        style={{
-          width: `${glowStyle.width}px`
-        }}
-        className="bottom-0 h-12 translate-y-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,_rgba(255,255,255,0.3)_0%,_transparent_70%)] blur-md"
-      />
-      <div
-        style={{ width: `${glowStyle.width}px` }}
-        className="bottom-0 h-px rounded-full bg-gradient-to-r from-transparent via-white/90 to-transparent"
-      />
-    </div>
   )
 }
