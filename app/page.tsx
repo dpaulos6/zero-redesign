@@ -1,103 +1,208 @@
-import Image from "next/image";
+"use client"
+
+import { Button } from "@/components/ui/button"
+import {
+  NavigationMenu,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+  navigationMenuTriggerStyle
+} from "@/components/ui/navigation-menu"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { MoveRight } from "lucide-react"
+import Image from "next/image"
+import Link from "next/link"
+import { useCallback, useEffect, useRef, useState } from "react"
+
+const tabs = [
+  { label: "Smart Categorization", value: "smart-categorization" },
+  { label: "AI Features", value: "ai-features" },
+  { label: "Feature Name", value: "feature-3" }
+]
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const tabRefs = useRef<HTMLButtonElement[]>([])
+  const [glowStyle, setGlowStyle] = useState({ left: 0, width: 0 })
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+  const handleTabChange = useCallback((value: string) => {
+    const index = tabs.findIndex((tab) => tab.value === value)
+    const tab = tabRefs.current[index]
+    if (tab) {
+      const rect = tab.getBoundingClientRect()
+      const listRect = tab.parentElement?.getBoundingClientRect()
+      const offsetLeft = listRect ? rect.left - listRect.left : 0
+
+      const newWidth = rect.width * 0.9
+      const newLeft = offsetLeft + (rect.width - newWidth) / 2
+
+      setGlowStyle({ left: newLeft, width: newWidth })
+    }
+  }, [])
+
+  useEffect(() => {
+    handleTabChange(tabs[0].value)
+  }, [handleTabChange])
+
+  return (
+    <main className="relative flex flex-1 flex-col">
+      <header className="mb-20 flex w-full items-center justify-center pt-6">
+        <nav className="flex w-full max-w-2xl items-center justify-between gap-2 rounded-xl border bg-popover p-2">
+          <div className="flex items-center gap-6">
+            <div className="size-10 rounded-md bg-white" />
+            <NavigationMenu>
+              <NavigationMenuList className="gap-1">
+                <NavigationMenuItem>
+                  <Link
+                    href="/#"
+                    passHref
+                  >
+                    <NavigationMenuLink
+                      className={navigationMenuTriggerStyle()}
+                    >
+                      Product
+                    </NavigationMenuLink>
+                  </Link>
+                </NavigationMenuItem>
+                <NavigationMenuItem>
+                  <NavigationMenuTrigger>Solutions</NavigationMenuTrigger>
+                  {/* <NavigationMenuContent>
+                    <NavigationMenuLink>Link</NavigationMenuLink>
+                  </NavigationMenuContent> */}
+                </NavigationMenuItem>
+                <NavigationMenuItem>
+                  <NavigationMenuTrigger>Resource</NavigationMenuTrigger>
+                  {/* <NavigationMenuContent>
+                    <NavigationMenuLink>Link</NavigationMenuLink>
+                  </NavigationMenuContent> */}
+                </NavigationMenuItem>
+              </NavigationMenuList>
+            </NavigationMenu>
+          </div>
+          <div className="flex gap-2">
+            <Button
+              variant="ghost"
+              className="h-10"
+            >
+              Sign in
+            </Button>
+            <Button className="h-10 font-medium">Get started</Button>
+          </div>
+        </nav>
+      </header>
+      <section className="flex flex-col items-center">
+        <div className="mb-6 inline-flex items-center rounded-full border bg-[#2a2a2a] px-4 py-1.5 pr-1.5">
+          <span>See what's new from O.email</span>
+          <Link
+            href="/#"
+            className="ml-2 flex items-center gap-1 rounded-full bg-gradient-to-b from-neutral-600 to-neutral-700 px-3 py-1 text-foreground text-sm"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+            <span>Learn More</span>
+            <MoveRight className="!size-4" />
+          </Link>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
-  );
+        <h1 className="mb-6 text-center text-6xl">
+          Open source gmail
+          <br />
+          alternative
+        </h1>
+        <p className="mx-auto mb-10 max-w-2xl text-center text-gray-400 text-lg">
+          Experience email the way you want with O – the first open source
+          <br />
+          email app that puts your privacy and safety first.
+        </p>
+        <Button className="bg-white px-6 py-5 text-black hover:bg-gray-200">
+          Get Started
+        </Button>
+      </section>
+      <section className="mt-10 flex flex-col">
+        <div className="flex justify-center">
+          <Tabs
+            defaultValue="smart-categorization"
+            onValueChange={handleTabChange}
+            className="flex items-center"
+          >
+            <div className="tabs-container relative flex w-full justify-center overflow-hidden">
+              <TabsList className="relative h-fit rounded-none bg-transparent">
+                {/* Glow */}
+                <CustomTabGlow glowStyle={glowStyle} />
+
+                {/* Tab Triggers */}
+                {tabs.map((tab, index) => (
+                  <TabsTrigger
+                    key={tab.value}
+                    value={tab.value}
+                    className="!bg-transparent !shadow-none relative h-12 w-52 rounded-none"
+                    ref={(el) => {
+                      if (el) tabRefs.current[index] = el
+                    }}
+                  >
+                    {tab.label}
+                  </TabsTrigger>
+                ))}
+              </TabsList>
+            </div>
+
+            <div className="flex justify-center">
+              <div className="container xl:max-w-7xl">
+                <TabsContent value="smart-categorization">
+                  <Image
+                    src="/email-preview.png"
+                    alt="Zero Email Preview"
+                    width={1920}
+                    height={1080}
+                    className=""
+                  />
+                </TabsContent>
+                <TabsContent value="ai-features">
+                  <Image
+                    src="/email-preview.png"
+                    alt="Zero Email Preview"
+                    width={1920}
+                    height={1080}
+                    className=""
+                  />
+                </TabsContent>
+                <TabsContent value="feature-3">
+                  <Image
+                    src="/email-preview.png"
+                    alt="Zero Email Preview"
+                    width={1920}
+                    height={1080}
+                    className=""
+                  />
+                </TabsContent>
+              </div>
+            </div>
+          </Tabs>
+        </div>
+      </section>
+    </main>
+  )
+}
+
+const CustomTabGlow = ({
+  glowStyle
+}: { glowStyle: { left: number; width: number } }) => {
+  return (
+    <>
+      {/* Glow Blur */}
+      <div
+        className="absolute bottom-0 h-12 translate-y-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,_rgba(255,255,255,0.3)_0%,_transparent_70%)] blur-md transition-all duration-300 ease-in-out"
+        style={{
+          left: `${glowStyle.left}px`,
+          width: `${glowStyle.width}px`
+        }}
+      />
+
+      {/* Solid Glow Line */}
+      <div
+        className="absolute bottom-0 h-px rounded-full bg-gradient-to-r from-transparent via-white/90 to-transparent transition-all duration-300 ease-in-out"
+        style={{
+          left: `${glowStyle.left}px`,
+          width: `${glowStyle.width}px`
+        }}
+      />
+    </>
+  )
 }
