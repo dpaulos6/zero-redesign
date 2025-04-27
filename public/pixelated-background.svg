@@ -1,7 +1,7 @@
 <svg width="1440" height="447" viewBox="0 0 1440 447" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<mask id="mask0_11_932" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="-314" y="-137" width="2068" height="275">
+<mask id="mask0_11_932" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="-314" y="-137" width="2068" height="1080">
 <g style="mix-blend-mode:overlay">
-<ellipse cx="1034" cy="137" rx="1034" ry="137" transform="matrix(1 0 0 -1 -314 137.149)" fill="white" fill-opacity="0.09"/>
+<rect width="1920" height="1080" transform="matrix(1 0 0 -1 -314 137.149)" fill="white" fill-opacity="0.09"/>
 </g>
 </mask>
 <g mask="url(#mask0_11_932)">
